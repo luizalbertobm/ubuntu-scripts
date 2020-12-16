@@ -209,8 +209,9 @@ function update_packages()
 #***********************************************************************************
 function install_mandatories()
 {
-	aptinstall Synaptic synaptic		#User-friendly package manager 
+	#aptinstall Synaptic synaptic		#User-friendly package manager 
 	aptinstall SNAP snap
+	snapinstall install snap-store
 	aptinstall WGET wget
 	aptinstall SSH ssh
 	aptinstall CURL curl
@@ -237,7 +238,11 @@ function install_dev_tools()
 	for i in $DEV_TOOLS; do
 		case $i in
 		"composer")
-			aptinstall COMPOSER composer
+			php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+			php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+			php composer-setup.php
+			php -r "unlink('composer-setup.php');"
+			sudo mv composer.phar /usr/local/bin/composer
 			composer -v;;
 		"npm")
 			aptinstall NPM npm
@@ -246,7 +251,11 @@ function install_dev_tools()
 			aptinstall NVM nvm
 			nvm -v;;
 		"git")
-			aptinstall GIT git && git -v;;
+			aptinstall GIT git && git -v
+			GITUSER=`dialog_line_input "Type your git full name" "John Doe"`
+			git config --global user.name "$GITUSER"
+			GITEMAIL=`dialog_line_input "Type your main e-mail" "john@email.com"`
+			git config --global user.email "$GITEMAIL";;
 		"node")
 			curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 			aptinstall NODE nodejs && nodejs -v;;
@@ -287,6 +296,22 @@ function install_softwares()
 			aptinstall OFFICE libre-office-calc;;
 		"postman")
 			snapinstall POSTMAN postman;;
+		"beekeeper-studio")
+			snapinstall BEEKEEPER beekeeper-studio;;
+		"dbeaver")
+			snapinstall DBEAVER dbeaver-ce;;
+		"spotify")
+			snapinstall SPOTIFY spotify;;
+		"filezilla")
+			aptinstall FILEZILLA filezilla;;
+		"standard-notes")
+			snapinstall NOTES standard-notes;;
+		"bluemail")
+			snapinstall BLUEMAIL bluemail;;
+		"discord")
+			snapinstall DISCORD discord;;
+		"steam")
+			aptinstall STEAM steam-installer;;
 		esac
 	done
 }
@@ -348,7 +373,7 @@ if [ $NEXT -eq 1 ]; then
 fi
 
 DEV_TOOLS=`dialog_multi_choice "Selecione as ferramentas que pretende instalar." vs-code android-studio flutter docker git node composer npm nvm`
-SOFTWARES=`dialog_multi_choice "Please choose the source control manager you want to install." chrome gimp postman office-writer office-calc`
+SOFTWARES=`dialog_multi_choice "Please choose the source control manager you want to install." chrome gimp postman office-writer office-calc beekeeper-studio dbeaver spotify filezilla standard-notes bluemail discord`
 VSCODE_EXTENSIONS=`dialog_multi_choice "Escolha as extensões do vs-code para instalar." pt-br html-css dart flutter docker php-intelephense php-debug vue`
 THEMES=`dialog_question "Deseja instalar extensões e temas?" "Será configurado temas para o shell do gnome e a instalaçao de algumas extensões."`
 

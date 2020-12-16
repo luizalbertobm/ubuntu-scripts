@@ -95,4 +95,6 @@ sudo systemctl restart mysql
 # MYSQL user and pass
 say $Green "==> Configuring mysql user=root and password=qweqwe"
 #SET GLOBAL validate_password.policy = 0; SET GLOBAL validate_password.length = 6; SET GLOBAL validate_password.number_count = 0;
-sudo mysql -Bse " DROP USER 'root'@'localhost'; CREATE USER 'root'@'%' IDENTIFIED BY 'qweqwe'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+sudo mysql -Bse " DROP USER 'root'@'localhost'; CREATE USER 'root'@'%' IDENTIFIED BY 'root'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES;"
+
+sudo apt install ubuntu-desktop-minimal -y
