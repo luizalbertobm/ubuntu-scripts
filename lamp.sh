@@ -63,7 +63,7 @@ say $Green "==> Instaling PHP"
 aptinstall php php-cli libapache2-mod-php 
 
 say $Green "==> Instaling PHP extensions"
-aptinstall php-common php-mysql php-json php-gd php-opcache php-readline php-curl php-mbstring php-xdebug
+aptinstall php-common php-mysql php-json php-gd php-opcache php-readline php-curl php-mbstring php-xdebug php-intl php-zip php-soap php-xml
 php --version
 say $Green "==> see https://stackoverflow.com/questions/53133005/how-to-install-xdebug-on-ubuntu to know hot to ativate x-debug"
 
